@@ -6,26 +6,20 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-
+import * as ReadableAPI from '../utils/ReadableAPI'
 const styles = theme => ({
   root: {
     width: '100%',
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.purple,
   },
 });
-
-const options = [
-  'Show some love to Material-UI',
-  'Show all notification content',
-  'Hide sensitive notification content',
-  'Hide all notification content',
-];
 
 class SimpleListMenu extends React.Component {
   state = {
     anchorEl: null,
-    selectedIndex: 1,
+    selectedIndex: 0,
+    options: [],
   };
 
   handleClickListItem = event => {
@@ -39,11 +33,17 @@ class SimpleListMenu extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
-
+  componentDidMount(){
+    ReadableAPI.getAllCategories().then(response => {
+      console.log()
+      this.setState({options:response.map(item => item.name)});
+    })
+  }
   render() {
     const { classes } = this.props;
-    const { anchorEl } = this.state;
-
+    const { anchorEl,options } = this.state;
+    if(!this.state.options.length)
+            return null;
     return (
       <div className={classes.root}>
         <List component="nav">
@@ -51,12 +51,12 @@ class SimpleListMenu extends React.Component {
             button
             aria-haspopup="true"
             aria-controls="lock-menu"
-            aria-label="When device is locked"
+            aria-label={"Category" + options[this.state.selectedIndex]}
             onClick={this.handleClickListItem}
           >
             <ListItemText
-              primary="When device is locked"
-              secondary={options[this.state.selectedIndex]}
+              primary={"Category: " + options[this.state.selectedIndex]}
+              secondary={options[this.state.selectedIndex].name}
             />
           </ListItem>
         </List>
@@ -69,7 +69,6 @@ class SimpleListMenu extends React.Component {
           {options.map((option, index) => (
             <MenuItem
               key={option}
-              disabled={index === 0}
               selected={index === this.state.selectedIndex}
               onClick={event => this.handleMenuItemClick(event, index)}
             >
@@ -83,7 +82,7 @@ class SimpleListMenu extends React.Component {
 }
 
 SimpleListMenu.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(SimpleListMenu);

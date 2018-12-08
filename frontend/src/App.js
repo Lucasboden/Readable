@@ -3,16 +3,22 @@ import { Route,
 Switch} from 'react-router-dom'
 import './App.css'
 import SignIn from './components/SignIn'
-import * as ReadableAPI from './utils/ReadableAPI'
 import ListPost from './components/ListPost'
-class BooksApp extends React.Component {
+import { loadCategories } from './actions/Category'
+class ReadableApp extends React.Component {
+
   state = {
-    categories:[],
-  };  
-  componentDidMount(){
-    ReadableAPI.getAllCategories().then(response => {
-      this.setState({categories:response})
-    })
+    categories : []
+  }
+
+  componentDidMount() {
+    const { store } = this.props
+    this.setState(() => ({
+      categories: store.getState()
+    }))
+  }
+  loadAllCategories = () => {
+    this.props.store.dispatch(this.loadCategories())
   }
 /*  
   
@@ -63,7 +69,6 @@ class BooksApp extends React.Component {
   
 
   render() {
-    console.log(this.state.categories)
     return (
       <div>
       <Switch>
@@ -71,7 +76,7 @@ class BooksApp extends React.Component {
           <SignIn/>
         )}/>
         <Route path='/home' render={(history) => (
-          <ListPost allCategories={this.state.categories}/>
+          <ListPost/>
         )}/>
       </Switch>
       </div>
@@ -79,4 +84,4 @@ class BooksApp extends React.Component {
   }
 }
 
-export default BooksApp
+export default ReadableApp

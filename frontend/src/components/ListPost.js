@@ -1,29 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import * as ReadableAPI from '../utils/ReadableAPI'
+import SimpleMenu from './simpleMenu'
 class ListPost extends Component{
-  static propTypes = {
-    allCategories: PropTypes.array.isRequired,
-  }
   state = {
     categories:[],
   }
-  componentDidMount() {
-    this.setState({
-      categories:this.props.allCategories
+  componentDidMount(){
+    ReadableAPI.getAllCategories().then(response => {
+      this.setState({categories:response})
     })
   }
   render (){
-    const {categories} = this.state
-    if(categories.length === 0)
-      return(<h1>Deu merda</h1>)
+    
+    //if(categories.length === 0)
+     // return(<h1>Deu merda</h1>)
     return(
       <div>
-        <ol>
-     {categories.map((categorie) => (
-      <li> {categorie.name} </li>
-      ))}
-      </ol>
+     <SimpleMenu/>
      </div>
     )
   }
