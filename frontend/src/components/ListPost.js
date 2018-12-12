@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import * as ReadableAPI from '../utils/ReadableAPI'
 import SimpleMenu from './simpleMenu'
+import {connect} from 'react-redux'
+import { fetchCategories } from '../actions/Category';
+import TabPerso from './TabPerso'
 class ListPost extends Component{
   state = {
-    categories:[],
+    posts:[],
   }
-  componentDidMount(){
-    ReadableAPI.getAllCategories().then(response => {
-      this.setState({categories:response})
-    })
-  }
+ 
   render (){
-    
+    const { categories } = this.props
+    console.log(categories);
     //if(categories.length === 0)
      // return(<h1>Deu merda</h1>)
-    return(
-      <div>
-     <SimpleMenu/>
-     </div>
+     return(
+      <TabPerso></TabPerso>
     )
   }
 }
-export default ListPost
+export default connect ()(ListPost)

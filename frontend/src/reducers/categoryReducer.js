@@ -1,11 +1,13 @@
-import { LOAD_CATEGORIES } from '../actions/Category'
+import { LOAD_CATEGORIES,fetchCategories } from '../actions/Category'
 
 export function categoryReducer(state={},action){
 	switch(action.type){
 		case LOAD_CATEGORIES:
-			return Object.assign({},state, {
-				categories: action
-			})
+			const { categories } = action
+			return {
+				...state,
+				categories
+			}
 		default:
 			return state
 	}

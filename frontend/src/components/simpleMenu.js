@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux'
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import * as ReadableAPI from '../utils/ReadableAPI'
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -33,12 +35,22 @@ class SimpleListMenu extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
-  componentDidMount(){
+  
+  /*(componentDidMount(){
     ReadableAPI.getAllCategories().then(response => {
       console.log()
       this.setState({options:response.map(item => item.name)});
     })
-  }
+  }*/
+
+  /*componentDidMount(){
+    if (this.props.match.params.category) {
+      this.props.categoryPostAPI();
+    } else {
+      this.props.postsAPI();
+    }
+  }*/
+
   render() {
     const { classes } = this.props;
     const { anchorEl,options } = this.state;
@@ -85,4 +97,5 @@ SimpleListMenu.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SimpleListMenu);
+//export default withStyles(styles)(connect(mapStateToProps,{fetchCategories})(SimpleListMenu));
+export default connect()(SimpleListMenu)
