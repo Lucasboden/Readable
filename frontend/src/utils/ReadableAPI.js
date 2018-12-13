@@ -11,3 +11,12 @@ export const getAllCategories = () =>
   .then(res => res.json())
   .then(data => data.categories)
 
+export const getPosts = category =>{
+  const path = category === 'all' ? 'posts' : `${category}/posts`
+  return(fetch(`${API}/${path}`, { headers })
+  .then(res => res.json()))
+  //.then(data => data.map(item => item.id))
+}
+
+  
+

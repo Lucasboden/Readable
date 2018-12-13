@@ -1,6 +1,13 @@
+import * as ReadableAPI from '../utils/ReadableAPI'
 export const LOAD_POSTS = 'LOAD_POSTS'
 
-export const loadCategories = categories => ({
+export const loadPosts = posts => ({
 	type: LOAD_POSTS,
-	categories
+	posts
 })
+
+export const fetchPosts = category => dispatch => (
+	ReadableAPI
+	.getPosts(category)
+	.then(posts => dispatch(loadPosts(posts)))
+);

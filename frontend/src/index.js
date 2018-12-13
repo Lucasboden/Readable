@@ -9,7 +9,6 @@ import './index.css'
 import { categoryReducer } from './reducers/categoryReducer'
 import { postsReducer } from './reducers/postsReducer'
 
-
 const logger = store => next => action => {
   console.group(action.type)
   console.info('dispatching',action)

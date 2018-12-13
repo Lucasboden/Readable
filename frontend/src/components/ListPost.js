@@ -11,7 +11,6 @@ class ListPost extends Component{
  
   render (){
     const { categories } = this.props
-    console.log(categories);
     //if(categories.length === 0)
      // return(<h1>Deu merda</h1>)
      return(

@@ -1,122 +1,103 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import {connect} from 'react-redux'
-import { fetchCategories } from '../actions/Category';
-
-class TabPerso extends React.Component {
-  state = {
-    value: 2,
-  };
-  componentDidMount(){
-    this.props.dispatch(fetchCategories())
-  }
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
-  render() {
-    var tabsItens = <h1>Aguarde Carregando</h1>
-    const { categories } = this.props
-     if (typeof categories !== 'undefined'){
-      tabsItens = <div>
-        {categories.map((category) => (
-                  <Tab label={category.name}></Tab>
-                ))}
-     </div>
-    }
-    return (
-      <Paper square>
-        <Tabs
-          value={this.state.value}
-          indicatorColor="primary"
-          textColor="primary"
-          onChange={this.handleChange}
-        >
-          <div>
-          {tabsItens}
-          </div>
-          
-        </Tabs>
-      </Paper>
-    );
-  }
-}
-
-import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
-import NoSsr from '@material-ui/core/NoSsr';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-
-function TabContainer(props) {
+import {connect} from 'react-redux'
+import { fetchCategories } from '../actions/Category';
+import { fetchPosts } from '../actions/Posts';
+import Post from './Post'
+import Grid from '@material-ui/core/Grid'
+function TabContainer({ children, dir }) {
   return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
+    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+      {children}
     </Typography>
   );
 }
 
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-function LinkTab(props) {
-  return <Tab component="a" onClick={event => event.preventDefault()} {...props} />;
-}
-
 const styles = theme => ({
   root: {
-    flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
 });
 
-class NavTabs extends React.Component {
+class TabPerso extends React.Component {
   state = {
     value: 0,
   };
-
+  componentDidMount(){
+    this.props.dispatch(fetchCategories());
+    this.props.dispatch(fetchPosts('all'));
+  }
   handleChange = (event, value) => {
     this.setState({ value });
+    var cat = value === 0 ? 'all' : this.props.categories[value-1].name;
+    this.props.dispatch(fetchPosts(cat));
   };
 
+  handleChangeIndex = index => {
+    this.setState({ value: index });
+  };
   render() {
-    const { classes } = this.props;
-    const { value } = this.state;
-
+    const { classes, theme,categories } = this.props;
     return (
-      <NoSsr>
-        <div className={classes.root}>
-          <AppBar position="static">
-            <Tabs fullWidth value={value} onChange={this.handleChange}>
-              <LinkTab label="Page One" href="page1" />
-              <LinkTab label="Page Two" href="page2" />
-              <LinkTab label="Page Three" href="page3" />
-            </Tabs>
-          </AppBar>
-          {value === 0 && <TabContainer>Page One</TabContainer>}
-          {value === 1 && <TabContainer>Page Two</TabContainer>}
-          {value === 2 && <TabContainer>Page Three</TabContainer>}
-        </div>
-      </NoSsr>
+      <div className={classes.root}>
+      <Grid container>
+        <Grid item lg>
+        <AppBar position="static" color="default">
+          <Tabs
+            value={this.state.value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            fullWidth
+          >
+            <Tab key='all' label='all'></Tab>
+            {tabsItens(categories)}
+          </Tabs>
+        </AppBar>
+        </Grid>
+        <Grid item xl>
+        <SwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={this.state.value}
+          onChangeIndex={this.handleChangeIndex}
+        >
+
+            <TabContainer dir={theme.direction}><Post></Post></TabContainer>
+            <TabContainer dir={theme.direction}><Post></Post></TabContainer>
+            <TabContainer dir={theme.direction}><Post ></Post></TabContainer>
+            <TabContainer dir={theme.direction}><Post ></Post></TabContainer>
+        </SwipeableViews>
+        </Grid>
+        </Grid>
+      </div>
     );
   }
 }
 
-NavTabs.propTypes = {
+TabPerso.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
-
 function mapStateToProps (state) {
     return {  
-        categories:state.categoryReducer.categories
+      categories:state.categoryReducer.categories,
+      posts:state.postsReducer
     }
+  }
+function tabsItens(categories){
+var tabsItens='<h1>processando</h1>'
+if (typeof categories !== 'undefined'){
+    tabsItens = categories.map((category) => (
+                <Tab key={category.name} label={category.name}></Tab>
+                ))
+    
+    }
+return tabsItens
 }
-export default connect (mapStateToProps)(TabPerso)
-  
-  
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(TabPerso));
