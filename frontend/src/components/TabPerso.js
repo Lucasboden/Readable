@@ -11,6 +11,7 @@ import { fetchCategories } from '../actions/Category';
 import { fetchPosts } from '../actions/Posts';
 import Post from './Post'
 import Grid from '@material-ui/core/Grid'
+
 function TabContainer({ children, dir }) {
   return (
     <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>

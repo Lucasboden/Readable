@@ -11,3 +11,8 @@ export const fetchPosts = category => dispatch => (
 	.getPosts(category)
 	.then(posts => dispatch(loadPosts(posts)))
 );
+
+export const fetchRegisterPost = (title,body,author,category,id=1,timestamp=Date.now()) => dispatch => (
+	ReadableAPI
+	.registerPost(title,body,author,category,id,timestamp)
+);

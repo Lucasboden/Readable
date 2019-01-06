@@ -14,7 +14,7 @@ class Post extends Component{
         <Grid container>
           <Grid item sm>
             {posts.map((post) => (
-              <Card header={post.title} body={post.body}>
+              <Card key={post.id}header={post.title} body={post.body}>
               </Card>
             ))}
           </Grid>
