@@ -13,6 +13,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import CardActions from '@material-ui/core/CardActions';
+
+import {connect} from 'react-redux'
+
+import { deleteComment,fetchRegisterComment } from '../actions/Comments';
 
 const styles = {
   appBar: {
@@ -31,9 +36,18 @@ class FullScreenDialog extends React.Component {
   state = {
     open: false,
   };
+
+  handleVote = (commentId) =>{
+    this.props.dispatch(deleteComment(commentId))
+  }
+
+  handleAdd = (postId) =>{
+    this.props.dispatch(fetchRegisterComment('body','author',postId))
+  }
   render() {
     
-    const { classes,open,handleClose,postId } = this.props;
+    const { classes,open,handleClose,postId,posts,comments } = this.props;
+    const index = posts.findIndex(post => post.id === postId)
     return (
       <div>
         
@@ -49,22 +63,18 @@ class FullScreenDialog extends React.Component {
                 <CloseIcon />
               </IconButton>
               <Typography variant="h6" color="inherit" className={classes.flex}>
-                Sound
+                {
+                  posts[index].title
+                }
               </Typography>
-              <Button color="inherit" onClick={handleClose}>
-                save
-              </Button>
             </Toolbar>
           </AppBar>
           <List>
-            <ListItem button>
-              <ListItemText primary={postId} secondary="Titania" />
-            </ListItem>
-            <Divider />
-            <ListItem button>
-              <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-            </ListItem>
+            {listComments(comments)}
           </List>
+          <Button size="small" color="primary" onClick={() => this.handleAdd(postId)}>
+            Add
+          </Button>
         </Dialog>
       </div>
     );
@@ -75,4 +85,38 @@ FullScreenDialog.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FullScreenDialog);
+function listComments(comments){
+  if(comments !== undefined)
+    return(comments.map(comment => (
+      <div>
+        <ListItem>
+          <ListItemText primary={comment.author} secondary={comment.body} />
+          <Typography component="p">
+            {`Votes: ${comment.voteScore}`} 
+          </Typography>
+        </ListItem>
+        <CardActions>
+        <Button size="small" color="primary" onClick={() => this.handleVote(comment.id,'upVote')}>
+          Vote Up
+        </Button>
+        <Button size="small" color="primary" onClick={() => this.handleVote(comment.id,'downVote')}>
+          Vote Down
+        </Button>
+        <Divider />
+        </CardActions>
+        <Divider />
+        <br/>
+      </div>
+      
+    )))
+  return null
+}
+
+function mapStateToProps (state) {
+  return {  
+    comments: state.commentsReducer.comments,
+    posts:state.postsReducer.posts
+  }
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(FullScreenDialog));

@@ -10,10 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 
-import ModalComments from './ModalComments'
-import { vote,deletePost } from '../actions/Posts'
+import ModalComments from './ModalComments';
+import { vote,deletePost } from '../actions/Posts';
+import { fetchComments } from '../actions/Comments';
+
 const styles = {
   media: {
     // ⚠️ object-fit is not supported by IE 11.
@@ -25,8 +27,9 @@ class ImgMediaCard extends Component{
     state = {
         modalOpen: false
     }
-    handleClick = () =>{
+    handleClick = (postId) =>{
         this.setState({modalOpen:true});
+        this.props.dispatch(fetchComments(postId))
     }
     handleClose = () =>{
         this.setState({modalOpen: false});
@@ -43,7 +46,7 @@ class ImgMediaCard extends Component{
   const { classes,header,body, postId, votes } = this.props;
   return (
             <Card className={classes.card} >
-            <CardActionArea onClick={this.handleClick}>
+            <CardActionArea onClick={() => this.handleClick(postId)}>
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                     {header}

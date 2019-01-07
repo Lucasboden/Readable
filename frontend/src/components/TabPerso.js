@@ -85,20 +85,22 @@ TabPerso.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
+
 function mapStateToProps (state) {
     return {  
       categories:state.categoryReducer.categories,
       posts:state.postsReducer
     }
-  }
+}
+
 function tabsItens(categories){
-var tabsItens='<h1>processando</h1>'
-if (typeof categories !== 'undefined'){
-    tabsItens = categories.map((category) => (
-                <Tab key={category.name} label={category.name}></Tab>
-                ))
-    
+  var tabsItens='<h1>processando</h1>'
+  if (typeof categories !== 'undefined'){
+      tabsItens = categories.map((category) => (
+        <Tab key={category.name} label={category.name}></Tab>
+      ))
     }
 return tabsItens
 }
+
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(TabPerso));

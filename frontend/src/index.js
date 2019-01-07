@@ -8,10 +8,11 @@ import App from './App'
 import './index.css'
 import { categoryReducer } from './reducers/categoryReducer'
 import { postsReducer } from './reducers/postsReducer'
+import { commentsReducer } from './reducers/commentsReducer'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION__COMPOSE || compose
 const store = createStore(
-  combineReducers({categoryReducer,postsReducer}),
+  combineReducers({categoryReducer,postsReducer,commentsReducer}),
   composeEnhancers(applyMiddleware(thunk))
   )
 ReactDOM.render(

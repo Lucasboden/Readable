@@ -59,5 +59,58 @@ export const deletePost = (postId) =>{
 	)
 }
 
+export const getComments = (postId) =>{
+	return fetch(`${API}/posts/${postId}/comments`,
+	{
+	  method: 'GET',
+	headers,
+	}).then(res => 
+		res.json()
+	)	
+}
+
+export const registerComment = (body,author,postId,id,timestamp) =>{
+	fetch(`${API}/comments`,
+	{
+	  method: 'POST',
+	headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+
+	  body: JSON.stringify({ 
+	    id: id,
+	    body: body,
+	    author: author,
+	    parentId: postId,
+	    timestamp: timestamp,
+	   }) 
+	}).then(res => 
+		res.json())
+}
+
+export const voteComment = (commentId, type) =>{
+	return fetch(`${API}/comments/${commentId}`,
+	{
+	  method: 'POST',
+	headers,
+	  body: JSON.stringify({ 
+	    option: type,
+	   }) 
+	}).then(res => 
+		res.json()
+	)
+}
+
+export const deleteComment = (commentId) =>{
+	return fetch(`${API}/comments/${commentId}`,
+	{
+	  method: 'DELETE',
+	headers,
+	}).then(res => 
+		res.json()
+	)
+}
+
   
 
