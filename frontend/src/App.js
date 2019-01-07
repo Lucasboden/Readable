@@ -21,15 +21,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import PersonOutlined from '@material-ui/icons/PersonOutlined';
-import PersonAdd from '@material-ui/icons/PersonAddOutlined';
-import Cancel from '@material-ui/icons/CancelOutlined';
 import SupervisorAccount from '@material-ui/icons/SupervisorAccount';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Dashboard from '@material-ui/icons/Dashboard';
-import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux'
-import Menu from '@material-ui/core/Menu';
 import { Link } from 'react-router-dom';
 //import { connect } from 'react-redux'
 import ListPost from './components/ListPost'
@@ -135,8 +128,6 @@ class App extends Component {
 
   render() {
     const { classes, theme } = this.props;
-    const { anchorEl } = this.state;
-    const openP = Boolean(anchorEl);
     return (
       <div className={classes.root}>
       <CssBaseline />
@@ -159,7 +150,7 @@ class App extends Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit"  style={{flex:2}} noWrap>
-              Conformidades
+              Readable
             </Typography>
           </Toolbar>
         </AppBar>

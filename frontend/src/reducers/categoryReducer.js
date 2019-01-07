@@ -1,4 +1,4 @@
-import { LOAD_CATEGORIES,fetchCategories } from '../actions/Category'
+import { LOAD_CATEGORIES } from '../actions/Category'
 
 export function categoryReducer(state={},action){
 	switch(action.type){

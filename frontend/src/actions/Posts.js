@@ -1,4 +1,5 @@
 import * as ReadableAPI from '../utils/ReadableAPI'
+import uuid from "uuid/v4";
 export const LOAD_POSTS = 'LOAD_POSTS'
 
 export const loadPosts = posts => ({
@@ -12,7 +13,7 @@ export const fetchPosts = category => dispatch => (
 	.then(posts => dispatch(loadPosts(posts)))
 );
 
-export const fetchRegisterPost = (title,body,author,category,id=1,timestamp=Date.now()) => dispatch => (
+export const fetchRegisterPost = (title,body,author,category,id=uuid(),timestamp=Date.now()) => dispatch => (
 	ReadableAPI
 	.registerPost(title,body,author,category,id,timestamp)
 );
