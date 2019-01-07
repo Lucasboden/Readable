@@ -7,8 +7,13 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+
 import React, { Component } from 'react';
-import Modal from './Modal'
+import {connect} from 'react-redux'
+
+import ModalComments from './ModalComments'
+import { vote,deletePost } from '../actions/Posts'
 const styles = {
   media: {
     // ⚠️ object-fit is not supported by IE 11.
@@ -26,9 +31,16 @@ class ImgMediaCard extends Component{
     handleClose = () =>{
         this.setState({modalOpen: false});
     }
+    handleVote(postId,type){
+        this.props.dispatch(vote(postId,type))
+    }
+    handleDeletePost(postId){
+        this.props.dispatch(deletePost(postId))
+    }
+
     render(){
     
-  const { classes,header,body } = this.props;
+  const { classes,header,body, postId, votes } = this.props;
   return (
             <Card className={classes.card} >
             <CardActionArea onClick={this.handleClick}>
@@ -39,18 +51,28 @@ class ImgMediaCard extends Component{
                 <Typography component="p">
                     {body}
                 </Typography>
+                <br/>
+                <Typography component="p">
+                    {`Votes: ${votes}`} 
+                </Typography>
                 </CardContent>
             </CardActionArea>
+            <Divider/>
             <CardActions>
-                <Button size="small" color="primary">
-                Share
+                <Button size="small" color="primary" onClick={() => this.handleVote(postId,'upVote')}>
+                    Vote Up
                 </Button>
-                <Button size="small" color="primary">
-                Learn More
+                <Button size="small" color="primary" onClick={() => this.handleVote(postId,'downVote')}>
+                    Vote Down
                 </Button>
-                <Modal handleClose={this.handleClose} open={this.state.modalOpen}></Modal>
+                <Button variant="outlined" color="primary" onClick={() => this.handleDeletePost(postId)}>
+                    Delete Post
+                </Button>
+                <ModalComments handleClose={this.handleClose} open={this.state.modalOpen} postId={postId}></ModalComments>
             </CardActions>
+            <Divider/>
             </Card>
+
   );
 }
 }
@@ -61,4 +83,4 @@ ImgMediaCard.propTypes = {
   body: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(ImgMediaCard);
+export default connect()(withStyles(styles)(ImgMediaCard));

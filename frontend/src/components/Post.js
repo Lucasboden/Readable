@@ -13,7 +13,7 @@ class Post extends Component{
         <Grid container>
           <Grid item sm>
             {posts.map((post) => (
-              <Card key={post.id}header={post.title} body={post.body}>
+              <Card key={post.id} header={post.title} body={post.body} postId={post.id} votes={post.voteScore}>
               </Card>
             ))}
           </Grid>

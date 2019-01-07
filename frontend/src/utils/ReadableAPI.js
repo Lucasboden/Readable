@@ -8,7 +8,8 @@ export const getAllCategories = () =>
 export const getPosts = category =>{
   const path = category === 'all' ? 'posts' : `${category}/posts`
   return(fetch(`${API}/${path}`, { headers })
-  .then(res => res.json()))
+  .then(res => 
+  	res.json()))
 }
 
 export const registerPost = (title,body,author,category,id,timestamp) =>{
@@ -29,8 +30,33 @@ export const registerPost = (title,body,author,category,id,timestamp) =>{
 	    timestamp: timestamp,
 	   }) 
 	}).then(res => {
-		console.log(res)
 		return(res.json())})
+}
+
+export const vote = (postId, type) =>{
+	return fetch(`${API}/posts/${postId}`,
+	{
+	  method: 'POST',
+	headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+	  body: JSON.stringify({ 
+	    option: type,
+	   }) 
+	}).then(res => 
+		res.json()
+	)
+}
+
+export const deletePost = (postId) =>{
+	return fetch(`${API}/posts/${postId}`,
+	{
+	  method: 'DELETE',
+	headers,
+	}).then(res => 
+		res.json()
+	)
 }
 
   

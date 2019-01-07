@@ -31,14 +31,12 @@ class FullScreenDialog extends React.Component {
   state = {
     open: false,
   };
-
   render() {
-    const { classes,open,handleClose } = this.props;
+    
+    const { classes,open,handleClose,postId } = this.props;
     return (
       <div>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Open full-screen dialog
-        </Button>
+        
         <Dialog
           fullScreen
           open={open}
@@ -60,7 +58,7 @@ class FullScreenDialog extends React.Component {
           </AppBar>
           <List>
             <ListItem button>
-              <ListItemText primary="Phone ringtone" secondary="Titania" />
+              <ListItemText primary={postId} secondary="Titania" />
             </ListItem>
             <Divider />
             <ListItem button>
