@@ -12,6 +12,12 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import { fetchRegisterPost } from '../actions/Posts';
 import { fetchCategories } from '../actions/Category';
 
@@ -39,24 +45,26 @@ class RegisterPost extends Component{
     postTitle:'',
     postContent:'',
     error:'',
+    modalOk: false,
+    modalError: false,
   }
  
   handleRegister = (title,body,author,category) => () =>{
     var error = ''
-    if(title === undefined)
-      error = 'title';
-    if(body === undefined)
-      error = '';
-    if(author === undefined)
-      error = 'name';
-    if(category === undefined)
-      error = 'category';
+    if(title === undefined || title === '')
+      error = 'Title';
+    if(body === undefined || body === '')
+      error = 'Content';
+    if(author === undefined || author === '')
+      error = 'Name';
+    if(category === undefined || category === '')
+      error = 'Category';
     if(error === ''){
       this.props.dispatch(fetchRegisterPost(title,body,author,category))
       this.setState({modalOk:true})
     }
     else{
-      this.setState({modalError:true,error:error})
+      this.setState({modalError:true,error:`${error} is required`})
     }
   };
   handleChangeCategory = event => {
@@ -71,9 +79,16 @@ class RegisterPost extends Component{
   handleChangeTitle = event => {
     this.setState({ postTitle: event.target.value });
   };
-  render (){
+  handleCloseError = () => {
+    this.setState({ modalError: false });
+  };
+  handleCloseConfirm = () => {
+    this.setState({ modalOk: false });
+  };
+
+    render (){
     var categories = this.props.categories;
-    var {postTitle,postContent,name,category} = this.state;
+    var {postTitle,postContent,name,category,error} = this.state;
     var itens = ''
     if(typeof categories !== 'undefined')
     itens = categories.map((category) => (
@@ -140,9 +155,46 @@ class RegisterPost extends Component{
       </Grid>
     </React.Fragment>
     <br/>
-      <Button onClick={this.handleRegister(postTitle,postContent,name,category)}>
+      <Button 
+      onClick={this.handleRegister(postTitle,postContent,name,category)}
+      variant="contained"
+      color="primary">
         Post
       </Button>
+      <Dialog
+          open={this.state.modalError}
+          onClose={this.handleCloseError}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Error</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {error}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseError} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.modalOk}
+          onClose={this.handleCloseConfirm}
+          aria-labelledby="form-dialog-title2"
+        >
+          <DialogTitle id="form-dialog-title2">Success</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              'Post successfully sent'
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseConfirm} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     )
   }
