@@ -75,6 +75,9 @@ function add (token, comment) {
 }
 
 function vote (token, id, option) {
+  console.log(token);
+  console.log(id);
+  console.log(option);
   return new Promise((res) => {
     let comments = getData(token)
     comment = comments[id]
