@@ -4,6 +4,10 @@ export const LOAD_POSTS = 'LOAD_POSTS'
 export const VOTE_ON_POST = 'VOTE_ON_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const EDIT_POST = 'EDIT_POST'
+export const EDIT_POST_COMMENTS_UP = 'EDIT_POST_COMMENTS_UP'
+export const EDIT_POST_COMMENTS_DOWN = 'EDIT_POST_COMMENTS_DOWN'
+export const SORT_POST_UP = 'SORT_POST_UP'
+export const SORT_POST_DOWN = 'SORT_POST_DOWN'
 
 export const loadPosts = posts => ({
 	type: LOAD_POSTS,
@@ -45,7 +49,6 @@ export const getPostDetails = (postId) => dispatch => {
 
 export const editPost = (postTitle,postContent,postId) => dispatch => {
 	return ReadableAPI.editPost(postTitle,postContent,postId).then((post) =>{
-		console.log(post)
 		dispatch({
 		type: EDIT_POST,
 		post
@@ -53,3 +56,30 @@ export const editPost = (postTitle,postContent,postId) => dispatch => {
 	})
 };
 
+export const editPostCommentsUp = (postId) => dispatch => {
+		dispatch({
+		type: EDIT_POST_COMMENTS_UP,
+		postId
+		})	
+};
+
+export const editPostCommentsDown = (postId) => dispatch => {
+		dispatch({
+		type: EDIT_POST_COMMENTS_DOWN,
+		postId
+		})	
+};
+
+export const sortASC = (property) => dispatch => {
+		dispatch({
+		type: SORT_POST_UP,
+		property
+		})	
+};
+
+export const sortDESC = (property) => dispatch => {
+		dispatch({
+		type: SORT_POST_DOWN,
+		property
+		})	
+};

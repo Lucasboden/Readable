@@ -41,7 +41,7 @@ export const deleteComment = (commentId) => dispatch => {
 	ReadableAPI.deleteComment(commentId).then((comment) => {
 		dispatch({
 		type: DELETE_COMMENT,
-		commentId
+		comment
 		})
 	})
 };

@@ -41,10 +41,10 @@ class ImgMediaCard extends Component{
     handleDeletePost(postId){
         this.props.dispatch(deletePost(postId))
     }
-
+    
     render(){
     
-  const { classes,header,body, postId, votes } = this.props;
+  const { classes,header,body,postId,votes,comments,timestamp} = this.props;
   return (
             <Card className={classes.card} >
             <CardActionArea onClick={() => this.handleClick(postId)}>
@@ -58,6 +58,12 @@ class ImgMediaCard extends Component{
                 <br/>
                 <Typography component="p">
                     {`Votes: ${votes}`} 
+                </Typography>
+                <Typography component="p">
+                    {`Comments: ${comments}`} 
+                </Typography>
+                <Typography component="p">
+                    {`Post Date: ${new Date(timestamp).toLocaleString()}`} 
                 </Typography>
                 </CardContent>
             </CardActionArea>

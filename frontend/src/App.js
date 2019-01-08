@@ -21,7 +21,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SupervisorAccount from '@material-ui/icons/SupervisorAccount';
+import ClearAll from '@material-ui/icons/ClearAll';
+import NoteAdd from '@material-ui/icons/NoteAdd';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 //import { connect } from 'react-redux'
@@ -181,14 +182,14 @@ class App extends Component {
           <List>
               <Link key={"ListPosts"} to='/home'>
                 <ListItem button>
-                  <ListItemIcon><SupervisorAccount /></ListItemIcon>
-                  <ListItemText>Posts</ListItemText>
+                  <ListItemIcon><ClearAll /></ListItemIcon>
+                  <ListItemText>List Posts</ListItemText>
                 </ListItem>
               </Link>
               <Link key={"newPost"} to='/newPost'>
                 <ListItem button>
-                  <ListItemIcon><SupervisorAccount /></ListItemIcon>
-                  <ListItemText>Posts</ListItemText>
+                  <ListItemIcon><NoteAdd /></ListItemIcon>
+                  <ListItemText>Add Post</ListItemText>
                 </ListItem>
               </Link>
           </List>

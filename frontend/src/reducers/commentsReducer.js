@@ -16,11 +16,11 @@ export function commentsReducer(state={},action){
 		      comments: [...currentCommentVote]
 		    }
 		case DELETE_COMMENT:
-		 	var currentCommentDelete = [...state.comments]
-	      	const indexDelete = currentCommentDelete.findIndex(comment => comment.id === action.commentId)
+			var currentCommentDelete = [...state.comments]
+		 	const indexDelete = currentCommentDelete.findIndex(comment => comment.id === action.comment.commentId)
 	      	currentCommentDelete.splice(indexDelete,1)
 	      	return {
-		      comments: [...currentCommentDelete]
+	      		comments: [...currentCommentDelete],
 		    }
 		case ADD_COMMENT:
 			var currentCommentAdd = [...state.comments]

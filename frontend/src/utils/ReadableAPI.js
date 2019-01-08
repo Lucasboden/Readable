@@ -95,7 +95,6 @@ export const getComments = (postId) =>{
 }
 
 export const registerComment = (body,author,postId,id,timestamp) =>{
-	console.log(id)
 	return fetch(`${API}/comments`,
 	{
 	  method: 'POST',
@@ -131,7 +130,6 @@ export const voteComment = (commentId, type) =>{
 }
 
 export const deleteComment = (commentId) =>{
-	console.log(commentId)
 	return fetch(`${API}/comments/${commentId}`,
 	{
 	  method: 'DELETE',

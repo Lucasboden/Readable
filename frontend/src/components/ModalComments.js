@@ -21,6 +21,7 @@ import {connect} from 'react-redux'
 import { Link } from 'react-router-dom';
 
 import { deleteComment,fetchRegisterComment, vote } from '../actions/Comments';
+import { editPostCommentsUp,editPostCommentsDown } from '../actions/Posts';
 
 const styles = {
   appBar: {
@@ -48,10 +49,12 @@ class FullScreenDialog extends React.Component {
 
   handleAdd = (body,author,postId) =>{
     this.props.dispatch(fetchRegisterComment(body,author,postId))
+    this.props.dispatch(editPostCommentsUp(postId))
   }
 
-  handleDeleteComment = (commentId) =>{
+  handleDeleteComment = (commentId,postId) =>{
     this.props.dispatch(deleteComment(commentId))
+    this.props.dispatch(editPostCommentsDown(postId))
   }
 
   handleChangeContent = event => {
@@ -65,8 +68,6 @@ class FullScreenDialog extends React.Component {
   render() {
     
     const { classes,open,handleClose,postId,posts,comments } = this.props;
-    if(comments !== undefined)
-      console.log(comments[0].id)
     const { body,author } = this.state;
     const index = posts.findIndex(post => post.id === postId)
     var listaComentarios = null
@@ -86,7 +87,7 @@ class FullScreenDialog extends React.Component {
         <Button size="small" color="primary" onClick={() => this.handleVote(comment.id,'downVote')}>
           Vote Down
         </Button>
-        <Button variant="outlined" color="primary" onClick={() => this.handleDeleteComment(comment.id)}>
+        <Button variant="outlined" color="primary" onClick={() => this.handleDeleteComment(comment.id,postId)}>
           Delete Comment
         </Button>
         <Link to={'/editComment/'.concat(comment.id)}>
@@ -122,8 +123,6 @@ class FullScreenDialog extends React.Component {
             </Toolbar>
           </AppBar>
           <List>
-            
-            
     {listaComentarios}
           </List>
           <Typography variant="h6" gutterBottom>
