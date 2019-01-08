@@ -27,6 +27,9 @@ import { Link } from 'react-router-dom';
 //import { connect } from 'react-redux'
 import ListPost from './components/ListPost'
 import RegisterPost from './components/RegisterPost'
+import EditPost from './components/EditPost'
+import EditComment from './components/EditComment'
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -199,6 +202,8 @@ class App extends Component {
             )}/>
             <Route exact path='/home' component={ListPost}/>
             <Route exact path='/newPost' component={RegisterPost}/>
+            <Route exact path='/editPost/:postId' component={EditPost}/>
+            <Route exact path='/editComment/:commentId' component={EditComment}/>
           </Switch>
         </main>
       </div>

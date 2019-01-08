@@ -14,8 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import CardActions from '@material-ui/core/CardActions';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 import {connect} from 'react-redux'
+import { Link } from 'react-router-dom';
 
 import { deleteComment,fetchRegisterComment, vote } from '../actions/Comments';
 
@@ -35,24 +38,36 @@ function Transition(props) {
 class FullScreenDialog extends React.Component {
   state = {
     open: false,
+    author: '',
+    body: '',
   };
 
   handleVote = (commentId,type) =>{
-    console.log(commentId)
     this.props.dispatch(vote(commentId,type))
   }
 
-  handleAdd = (postId) =>{
-    this.props.dispatch(fetchRegisterComment('a','b',postId))
+  handleAdd = (body,author,postId) =>{
+    this.props.dispatch(fetchRegisterComment(body,author,postId))
   }
 
   handleDeleteComment = (commentId) =>{
     this.props.dispatch(deleteComment(commentId))
   }
 
+  handleChangeContent = event => {
+    this.setState({ body: event.target.value });
+  };
+
+  handleChangeName = event => {
+    this.setState({ author: event.target.value });
+  };
+
   render() {
     
     const { classes,open,handleClose,postId,posts,comments } = this.props;
+    if(comments !== undefined)
+      console.log(comments[0].id)
+    const { body,author } = this.state;
     const index = posts.findIndex(post => post.id === postId)
     var listaComentarios = null
     if(comments !== undefined)
@@ -74,6 +89,11 @@ class FullScreenDialog extends React.Component {
         <Button variant="outlined" color="primary" onClick={() => this.handleDeleteComment(comment.id)}>
           Delete Comment
         </Button>
+        <Link to={'/editComment/'.concat(comment.id)}>
+          <Button variant="outlined" color="primary">
+            Edit Comment
+          </Button>
+        </Link>
         <Divider />
         </CardActions>
         <Divider />
@@ -106,9 +126,36 @@ class FullScreenDialog extends React.Component {
             
     {listaComentarios}
           </List>
-          <Button size="small" color="primary" onClick={() => this.handleAdd(postId)}>
+          <Typography variant="h6" gutterBottom>
+            New Comment
+          </Typography>
+          <Grid container spacing={24}>
+          <Grid item xs={12} sm={12}>
+          <TextField
+            required
+            id="author"
+            name="author"
+            label="Author"
+            onChange={this.handleChangeName}
+            fullWidth
+          />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+          <TextField
+            required
+            id="content"
+            name="content"
+            label="Content"
+            onChange={this.handleChangeContent}
+            fullWidth
+          />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+          <Button variant="contained" size="small" color="primary" fullWidth onClick={() => this.handleAdd(body,author,postId)}>
             Add
           </Button>
+          </Grid>
+          </Grid>
         </Dialog>
       </div>
     );
@@ -118,32 +165,6 @@ class FullScreenDialog extends React.Component {
 FullScreenDialog.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
-function listComments(comments,handleVote){
-  if(comments !== undefined)
-    return(comments.map((comment) => (
-      <div key={comment.id}>
-        <ListItem>
-          <ListItemText primary={comment.author} secondary={comment.body} />
-          <Typography component="p">
-            {`Votes: ${comment.voteScore}`} 
-          </Typography>
-        </ListItem>
-        <CardActions>
-        <Button size="small" color="primary" onClick={() => handleVote(comment.id,'upVote')}>
-          Vote Up
-        </Button>
-        <Button size="small" color="primary" onClick={() => handleVote(comment.id,'downVote')}>
-          Vote Down
-        </Button>
-        <Divider />
-        </CardActions>
-        <Divider />
-        <br/>
-      </div>
-    )))
-  return null
-}
 
 function mapStateToProps (state) {
   return {  

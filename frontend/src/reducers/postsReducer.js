@@ -1,4 +1,4 @@
-import { LOAD_POSTS, VOTE_ON_POST, DELETE_POST } from '../actions/Posts'
+import { LOAD_POSTS, VOTE_ON_POST, DELETE_POST, EDIT_POST } from '../actions/Posts'
 
 export function postsReducer(state={},action){
 	switch(action.type){
@@ -9,18 +9,26 @@ export function postsReducer(state={},action){
 				posts
 			}
 		case VOTE_ON_POST:
+			console.log(state)
 			const currentPostVote = [...state.posts]
 	      	const index= currentPostVote.findIndex(post => post.id === action.post.id)
     		currentPostVote[index].voteScore = action.post.voteScore
 		    return {
 		      posts: [...currentPostVote]
 		    }
-		 case DELETE_POST:
+		case DELETE_POST:
 		 	var currentPostDelete = [...state.posts]
 	      	const indexDelete = currentPostDelete.findIndex(post => post.id === action)
-	      	var aux = currentPostDelete.splice(indexDelete,1)
+	      	currentPostDelete.splice(indexDelete,1)
 	      	return {
 		      posts: [...currentPostDelete]
+		    }
+	   	case EDIT_POST:
+			var currentPostEdit = [...state.posts]
+	      	const indexEdit= currentPostEdit.findIndex(post => post.id === action.id)
+    		currentPostEdit[indexEdit] = action
+		    return {
+		      posts: [...currentPostEdit]
 		    }
 		default:
 			return state

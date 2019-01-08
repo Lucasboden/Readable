@@ -5,6 +5,7 @@ export const LOAD_COMMENTS = 'LOAD_COMMENTS'
 export const VOTE_ON_COMMENT = 'VOTE_ON_COMMENT'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
 
 export const loadComments = comments => ({
 	type: LOAD_COMMENTS,
@@ -42,5 +43,18 @@ export const deleteComment = (commentId) => dispatch => {
 		type: DELETE_COMMENT,
 		commentId
 		})
+	})
+};
+
+export const getCommentDetails = (commentId) => dispatch => {
+	return ReadableAPI.getComment(commentId)
+};
+
+export const editComment = (commentContent,commentId,timestamp=Date.now()) => dispatch => {
+	return ReadableAPI.editComment(commentContent,commentId).then((comment) =>{
+		dispatch({
+		type: EDIT_COMMENT,
+		comment
+		})	
 	})
 };

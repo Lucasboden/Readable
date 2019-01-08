@@ -3,6 +3,8 @@ import uuid from "uuid/v4";
 export const LOAD_POSTS = 'LOAD_POSTS'
 export const VOTE_ON_POST = 'VOTE_ON_POST'
 export const DELETE_POST = 'DELETE_POST'
+export const EDIT_POST = 'EDIT_POST'
+
 export const loadPosts = posts => ({
 	type: LOAD_POSTS,
 	posts
@@ -36,3 +38,18 @@ export const deletePost = (postId) => dispatch => {
 		})
 	})
 };
+
+export const getPostDetails = (postId) => dispatch => {
+	return ReadableAPI.getPost(postId)
+};
+
+export const editPost = (postTitle,postContent,postId) => dispatch => {
+	return ReadableAPI.editPost(postTitle,postContent,postId).then((post) =>{
+		console.log(post)
+		dispatch({
+		type: EDIT_POST,
+		post
+		})	
+	})
+};
+

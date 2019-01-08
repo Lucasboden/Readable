@@ -32,6 +32,22 @@ export const registerPost = (title,body,author,category,id,timestamp) =>{
 		return(res.json())})
 }
 
+export const editPost = (postTitle,postContent,postId) =>{
+	return fetch(`${API}/posts/${postId}`,
+	{
+	  method: 'PUT',
+	headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+	  body: JSON.stringify({ 
+	    title:postTitle,
+	    body: postContent,
+	   }) 
+	}).then(res => {
+		return(res.json())})
+}
+
 export const vote = (postId, type) =>{
 	return fetch(`${API}/posts/${postId}`,
 	{
@@ -58,6 +74,16 @@ export const deletePost = (postId) =>{
 	)
 }
 
+export const getPost = (postId) =>{
+	return fetch(`${API}/posts/${postId}`,
+	{
+	  method: 'GET',
+	headers,
+	}).then(res => 
+		res.json()
+	)
+}
+
 export const getComments = (postId) =>{
 	return fetch(`${API}/posts/${postId}/comments`,
 	{
@@ -69,6 +95,7 @@ export const getComments = (postId) =>{
 }
 
 export const registerComment = (body,author,postId,id,timestamp) =>{
+	console.log(id)
 	return fetch(`${API}/comments`,
 	{
 	  method: 'POST',
@@ -88,7 +115,6 @@ export const registerComment = (body,author,postId,id,timestamp) =>{
 }
 
 export const voteComment = (commentId, type) =>{
-	console.log(type)
 	return fetch(`${API}/comments/${commentId}`,
 	{
 	  method: 'POST',
@@ -105,6 +131,7 @@ export const voteComment = (commentId, type) =>{
 }
 
 export const deleteComment = (commentId) =>{
+	console.log(commentId)
 	return fetch(`${API}/comments/${commentId}`,
 	{
 	  method: 'DELETE',
@@ -114,5 +141,28 @@ export const deleteComment = (commentId) =>{
 	)
 }
 
-  
+ export const getComment = (commentId) =>{
+	return fetch(`${API}/comments/${commentId}`,
+	{
+	  method: 'GET',
+	headers,
+	}).then(res => 
+		res.json()
+	)
+}
 
+export const editComment = (commentContent,commentId,timestamp) =>{
+	return fetch(`${API}/comments/${commentId}`,
+	{
+	  method: 'PUT',
+	headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+	  body: JSON.stringify({ 
+	    timestamp: timestamp,
+	    body: commentContent,
+	   }) 
+	}).then(res => {
+		return(res.json())})
+}

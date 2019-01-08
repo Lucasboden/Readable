@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import ModalComments from './ModalComments';
 import { vote,deletePost } from '../actions/Posts';
@@ -71,6 +72,11 @@ class ImgMediaCard extends Component{
                 <Button variant="outlined" color="primary" onClick={() => this.handleDeletePost(postId)}>
                     Delete Post
                 </Button>
+                <Link to={'/editPost/'.concat(postId)}>
+                <Button variant="outlined" color="primary">
+                    Edit Post
+                </Button>
+                </Link>
                 <ModalComments handleClose={this.handleClose} open={this.state.modalOpen} postId={postId}></ModalComments>
             </CardActions>
             <Divider/>
