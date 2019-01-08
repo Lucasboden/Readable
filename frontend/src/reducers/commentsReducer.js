@@ -24,7 +24,8 @@ export function commentsReducer(state={},action){
 		    }
 		case ADD_COMMENT:
 			var currentCommentAdd = [...state.comments]
-			currentCommentAdd.append(action)
+			console.log(action)
+			currentCommentAdd.push(action.comment)
 			return{
 				comments: [...currentCommentAdd]
 			}

@@ -17,15 +17,15 @@ export const fetchComments = postId => dispatch => (
 	.then(comments => dispatch(loadComments(comments)))
 );
 
-export const fetchRegisterComment = (body,author,postId,id=uuid(),timestamp=Date.now()) => dispatch => (
-	ReadableAPI
-	.registerComment(body,author,postId,id,timestamp).then((comment) => {
+export const fetchRegisterComment = (body,author,postId,id=uuid(),timestamp=Date.now()) => dispatch => {
+	return ReadableAPI
+	.registerComment(body,author,postId,id,timestamp).then(comment => {
 		dispatch({
 			type: ADD_COMMENT,
 			comment
 		})
 	})
-);
+};
 
 export const vote = (commentId,type) => dispatch => {
 	ReadableAPI.voteComment(commentId,type).then((comment) => {

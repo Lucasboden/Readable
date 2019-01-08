@@ -16,7 +16,6 @@ export const registerPost = (title,body,author,category,id,timestamp) =>{
 	fetch(`${API}/posts`,
 	{
 	  method: 'POST',
-	  
 	headers: {
       ...headers,
       'Content-Type': 'application/json'
@@ -70,14 +69,13 @@ export const getComments = (postId) =>{
 }
 
 export const registerComment = (body,author,postId,id,timestamp) =>{
-	fetch(`${API}/comments`,
+	return fetch(`${API}/comments`,
 	{
 	  method: 'POST',
 	headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-
 	  body: JSON.stringify({ 
 	    id: id,
 	    body: body,
@@ -90,10 +88,14 @@ export const registerComment = (body,author,postId,id,timestamp) =>{
 }
 
 export const voteComment = (commentId, type) =>{
+	console.log(type)
 	return fetch(`${API}/comments/${commentId}`,
 	{
 	  method: 'POST',
-	headers,
+	headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
 	  body: JSON.stringify({ 
 	    option: type,
 	   }) 

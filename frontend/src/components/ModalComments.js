@@ -17,7 +17,7 @@ import CardActions from '@material-ui/core/CardActions';
 
 import {connect} from 'react-redux'
 
-import { deleteComment,fetchRegisterComment } from '../actions/Comments';
+import { deleteComment,fetchRegisterComment, vote } from '../actions/Comments';
 
 const styles = {
   appBar: {
@@ -37,17 +37,49 @@ class FullScreenDialog extends React.Component {
     open: false,
   };
 
-  handleVote = (commentId) =>{
-    this.props.dispatch(deleteComment(commentId))
+  handleVote = (commentId,type) =>{
+    console.log(commentId)
+    this.props.dispatch(vote(commentId,type))
   }
 
   handleAdd = (postId) =>{
-    this.props.dispatch(fetchRegisterComment('body','author',postId))
+    this.props.dispatch(fetchRegisterComment('a','b',postId))
   }
+
+  handleDeleteComment = (commentId) =>{
+    this.props.dispatch(deleteComment(commentId))
+  }
+
   render() {
     
     const { classes,open,handleClose,postId,posts,comments } = this.props;
     const index = posts.findIndex(post => post.id === postId)
+    var listaComentarios = null
+    if(comments !== undefined)
+      listaComentarios=comments.map((comment) => (
+      <div key={comment.id}>
+        <ListItem>
+          <ListItemText primary={comment.author} secondary={comment.body} />
+          <Typography component="p">
+            {`Votes: ${comment.voteScore}`} 
+          </Typography>
+        </ListItem>
+        <CardActions>
+        <Button size="small" color="primary" onClick={() => this.handleVote(comment.id,'upVote')}>
+          Vote Up
+        </Button>
+        <Button size="small" color="primary" onClick={() => this.handleVote(comment.id,'downVote')}>
+          Vote Down
+        </Button>
+        <Button variant="outlined" color="primary" onClick={() => this.handleDeleteComment(comment.id)}>
+          Delete Comment
+        </Button>
+        <Divider />
+        </CardActions>
+        <Divider />
+        <br/>
+      </div>
+    ))
     return (
       <div>
         
@@ -70,7 +102,9 @@ class FullScreenDialog extends React.Component {
             </Toolbar>
           </AppBar>
           <List>
-            {listComments(comments)}
+            
+            
+    {listaComentarios}
           </List>
           <Button size="small" color="primary" onClick={() => this.handleAdd(postId)}>
             Add
@@ -85,10 +119,10 @@ FullScreenDialog.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-function listComments(comments){
+function listComments(comments,handleVote){
   if(comments !== undefined)
-    return(comments.map(comment => (
-      <div>
+    return(comments.map((comment) => (
+      <div key={comment.id}>
         <ListItem>
           <ListItemText primary={comment.author} secondary={comment.body} />
           <Typography component="p">
@@ -96,10 +130,10 @@ function listComments(comments){
           </Typography>
         </ListItem>
         <CardActions>
-        <Button size="small" color="primary" onClick={() => this.handleVote(comment.id,'upVote')}>
+        <Button size="small" color="primary" onClick={() => handleVote(comment.id,'upVote')}>
           Vote Up
         </Button>
-        <Button size="small" color="primary" onClick={() => this.handleVote(comment.id,'downVote')}>
+        <Button size="small" color="primary" onClick={() => handleVote(comment.id,'downVote')}>
           Vote Down
         </Button>
         <Divider />
@@ -107,7 +141,6 @@ function listComments(comments){
         <Divider />
         <br/>
       </div>
-      
     )))
   return null
 }
