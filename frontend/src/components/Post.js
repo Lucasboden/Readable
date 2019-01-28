@@ -25,7 +25,6 @@ class Post extends Component{
 
   render (){
      const {posts} = this.props
-     console.log(posts)
      if(typeof posts !== 'undefined')
       return(
         <Grid container spacing={24}>
@@ -39,7 +38,7 @@ class Post extends Component{
         </Grid>
         <Grid item xs={12} sm={12}>
           {posts.map((post) => (
-            <Card key={post.id} header={post.title} body={post.body} postId={post.id} votes={post.voteScore} comments={post.commentCount} timestamp={post.timestamp} >
+            <Card key={post.id} header={post.title} body={post.body} postId={post.id} votes={post.voteScore} comments={post.commentCount} timestamp={post.timestamp} author={post.author} >
           </Card>
         ))}
           </Grid>

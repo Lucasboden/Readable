@@ -13,7 +13,6 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import ModalComments from './ModalComments';
 import { vote,deletePost } from '../actions/Posts';
 import { fetchComments } from '../actions/Comments';
 
@@ -44,9 +43,10 @@ class ImgMediaCard extends Component{
     
     render(){
     
-  const { classes,header,body,postId,votes,comments,timestamp} = this.props;
+  const { classes,header,body,postId,votes,comments,timestamp,author} = this.props;
   return (
             <Card className={classes.card} >
+            <Link to={'/'.concat(this.props.categorie).concat('/').concat(postId)}>
             <CardActionArea onClick={() => this.handleClick(postId)}>
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
@@ -65,8 +65,12 @@ class ImgMediaCard extends Component{
                 <Typography component="p">
                     {`Post Date: ${new Date(timestamp).toLocaleString()}`} 
                 </Typography>
+                <Typography component="p">
+                    {`Author: ${author}`} 
+                </Typography>
                 </CardContent>
             </CardActionArea>
+            </Link>
             <Divider/>
             <CardActions>
                 <Button size="small" color="primary" onClick={() => this.handleVote(postId,'upVote')}>
@@ -83,7 +87,6 @@ class ImgMediaCard extends Component{
                     Edit Post
                 </Button>
                 </Link>
-                <ModalComments handleClose={this.handleClose} open={this.state.modalOpen} postId={postId}></ModalComments>
             </CardActions>
             <Divider/>
             </Card>
@@ -97,5 +100,11 @@ ImgMediaCard.propTypes = {
   header: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
 };
+
+function mapStateToProps (state) {
+    return {  
+      categorie:state.categorieReducer.categorie
+    }
+  }
 
 export default connect()(withStyles(styles)(ImgMediaCard));

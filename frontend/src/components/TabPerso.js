@@ -7,6 +7,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { fetchCategories } from '../actions/Category';
 import { fetchPosts } from '../actions/Posts';
 import Post from './Post'
@@ -31,13 +32,13 @@ class TabPerso extends React.Component {
     value: 0,
   };
   componentDidMount(){
-    this.props.dispatch(fetchCategories());
-    this.props.dispatch(fetchPosts('all'));
+    this.props.fetchCategories();
+    this.props.fetchPosts('all');
   }
   handleChange = (event, value) => {
     this.setState({ value });
     var cat = value === 0 ? 'all' : this.props.categories[value-1].name;
-    this.props.dispatch(fetchPosts(cat));
+    this.props.fetchPosts(cat);
   };
 
   handleChangeIndex = index => {
@@ -103,4 +104,4 @@ function tabsItens(categories){
 return tabsItens
 }
 
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(TabPerso));
+export default connect(mapStateToProps,{ fetchCategories, fetchPosts })(withStyles(styles, { withTheme: true })(TabPerso));
