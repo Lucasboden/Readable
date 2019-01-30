@@ -21,7 +21,7 @@ import {connect} from 'react-redux'
 import { Link } from 'react-router-dom';
 
 import { deleteComment,fetchRegisterComment, vote } from '../actions/Comments';
-import { editPostCommentsUp,editPostCommentsDown } from '../actions/Posts';
+import { editPostCommentsUp,editPostCommentsDown, getPostDetails } from '../actions/Posts';
 
 const styles = {
   appBar: {
@@ -41,6 +41,7 @@ class FullScreenDialog extends React.Component {
     open: false,
     author: '',
     body: '',
+    post:'',
   };
 
   handleVote = (commentId,type) =>{
@@ -65,11 +66,15 @@ class FullScreenDialog extends React.Component {
     this.setState({ author: event.target.value });
   };
 
+  componentDidMount(){
+    this.setState({post:this.props.dispatch(getPostDetails(this.props.match.params.postId))})
+  }
+  
   render() {
     
-    const { classes,open,handleClose,postId,posts,comments } = this.props;
+    const { postId,comments } = this.props;
     const { body,author } = this.state;
-    const index = posts.findIndex(post => post.id === postId)
+    
     var listaComentarios = null
     if(comments !== undefined)
       listaComentarios=comments.map((comment) => (
@@ -103,25 +108,6 @@ class FullScreenDialog extends React.Component {
     ))
     return (
       <div>
-        
-        <Dialog
-          fullScreen
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-        >
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <IconButton color="inherit" onClick={handleClose} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" className={classes.flex}>
-                {
-                  posts[index].title
-                }
-              </Typography>
-            </Toolbar>
-          </AppBar>
           <List>
     {listaComentarios}
           </List>
@@ -155,7 +141,6 @@ class FullScreenDialog extends React.Component {
           </Button>
           </Grid>
           </Grid>
-        </Dialog>
       </div>
     );
   }
@@ -168,7 +153,6 @@ FullScreenDialog.propTypes = {
 function mapStateToProps (state) {
   return {  
     comments: state.commentsReducer.comments,
-    posts:state.postsReducer.posts
   }
 }
 

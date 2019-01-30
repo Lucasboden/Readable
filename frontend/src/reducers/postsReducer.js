@@ -8,6 +8,10 @@ function dynamicSort(property,sortOrder) {
     }
 }
 
+var checkId = (action) =>(id) =>{
+	return id.id !== action.postId
+}
+
 export function postsReducer(state={},action){
 	switch(action.type){
 		case LOAD_POSTS:
@@ -17,44 +21,48 @@ export function postsReducer(state={},action){
 				posts
 			}
 		case VOTE_ON_POST:
-			const currentPostVote = [...state.posts]
-	      	const index= currentPostVote.findIndex(post => post.id === action.post.id)
-    		currentPostVote[index].voteScore = action.post.voteScore
-		    return {
-		      posts: [...currentPostVote]
+			const updatedPosts = state.posts.map(post => {
+		    if (post.id === action.post.id) {
+		        return {
+		            ...post,
+		            voteScore: action.post.voteScore
+		        }
 		    }
+		    return post
+		})
 		case DELETE_POST:
-		 	var currentPostDelete = [...state.posts]
-	      	const indexDelete = currentPostDelete.findIndex(post => post.id === action)
-	      	currentPostDelete.splice(indexDelete,1)
-	      	return {
+		 	var currentPostDelete = [...state.posts].filter(checkId(action))
+		 	return {
 		      posts: [...currentPostDelete]
 		    }
 	   	case EDIT_POST:
-			var currentPostEdit = [...state.posts]
-	      	const indexEdit= currentPostEdit.findIndex(post => post.id === action.id)
-    		currentPostEdit[indexEdit] = action
-		    return {
-		      posts: [...currentPostEdit]
-		    }
+			return{
+				...state,
+				[action.post.id]: action.post
+			}
 	    case EDIT_POST_COMMENTS_DOWN:
-			var currentPostEditDown = [...state.posts]
-	      	const indexEditDown = currentPostEditDown.findIndex(post => post.id === action.postId)
-    		currentPostEditDown[indexEditDown].commentsCount = currentPostEditDown[indexEditDown].commentsCount+1
-		    return {
-		      posts: [...currentPostEdit]
+		    state.posts.map(post => {
+		    if (post.id === action.postId) {
+		        return {
+		            ...post,
+		            commentsCount: post['commentCount'] - 1
+		        }
 		    }
+		    return post
+		   })
 		case EDIT_POST_COMMENTS_UP:
-			var currentPostEditUp = [...state.posts]
-	      	const indexEditUp = currentPostEditUp.findIndex(post => post.id === action.postId)
-    		currentPostEditUp[indexEditUp].commentCount = currentPostEditUp[indexEditUp].commentCount+1
-		    return {
-		      posts: [...currentPostEditUp]
+		state.posts.map(post => {
+		    if (post.id === action.postId) {
+		        return {
+		            ...post,
+		            commentsCount: post['commentCount'] + 1
+		        }
 		    }
+		    return post
+		   })
 		case SORT_POST_UP:
-			var currentPostSortUp = [...state.posts]
-			currentPostSortUp.sort(dynamicSort(action.property,1))
-		    return {
+			var currentPostSortUp = [...state.posts].sort(dynamicSort(action.property,1))
+			return {
 		      posts: [...currentPostSortUp]
 		    }
 	    case SORT_POST_DOWN:

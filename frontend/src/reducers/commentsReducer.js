@@ -9,12 +9,15 @@ export function commentsReducer(state={},action){
 				comments
 			}
 		case VOTE_ON_COMMENT:
-			const currentCommentVote = [...state.comments]
-	      	const index= currentCommentVote.findIndex(comment => comment.id === action.comment.id)
-    		currentCommentVote[index].voteScore = action.comment.voteScore
-		    return {
-		      comments: [...currentCommentVote]
-		    }
+			const updatedComments = state.comments.map(comment => {
+			    if (comment.id === action.comment.id) {
+			        return {
+			            ...comment,
+			            voteScore: action.comment.voteScore
+			        }
+			    }
+			    return comment
+			})
 		case DELETE_COMMENT:
 			var currentCommentDelete = [...state.comments]
 		 	const indexDelete = currentCommentDelete.findIndex(comment => comment.id === action.comment.commentId)

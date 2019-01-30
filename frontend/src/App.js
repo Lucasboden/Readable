@@ -30,6 +30,7 @@ import ListPost from './components/ListPost'
 import RegisterPost from './components/RegisterPost'
 import EditPost from './components/EditPost'
 import EditComment from './components/EditComment'
+import ModalComments from './components/ModalComments';
 
 const drawerWidth = 240;
 
@@ -206,6 +207,7 @@ class App extends Component {
             <Route exact path='/newPost' component={RegisterPost}/>
             <Route exact path='/editPost/:postId' component={EditPost}/>
             <Route exact path='/editComment/:commentId' component={EditComment}/>
+            <Route exact path='/:category/:postId' component={ModalComments}/>
           </Switch>
         </main>
       </div>
