@@ -39,7 +39,6 @@ class EditComment extends Component{
     this.setState({ commentContent: event.target.value });
   };
   handleEdit = (commentContent,commentId) => {
-    console.log(commentId)
     this.props.dispatch(editComment(commentContent,commentId))
   };
 

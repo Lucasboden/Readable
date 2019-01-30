@@ -17,7 +17,6 @@ export function postsReducer(state={},action){
 				posts
 			}
 		case VOTE_ON_POST:
-			console.log(state)
 			const currentPostVote = [...state.posts]
 	      	const index= currentPostVote.findIndex(post => post.id === action.post.id)
     		currentPostVote[index].voteScore = action.post.voteScore
@@ -46,7 +45,6 @@ export function postsReducer(state={},action){
 		      posts: [...currentPostEdit]
 		    }
 		case EDIT_POST_COMMENTS_UP:
-			console.log(action)
 			var currentPostEditUp = [...state.posts]
 	      	const indexEditUp = currentPostEditUp.findIndex(post => post.id === action.postId)
     		currentPostEditUp[indexEditUp].commentCount = currentPostEditUp[indexEditUp].commentCount+1

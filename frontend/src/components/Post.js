@@ -25,7 +25,6 @@ class Post extends Component{
 
   render (){
      const {posts} = this.props
-     console.log(posts)
      if(typeof posts !== 'undefined')
       return(
         <Grid container spacing={24}>

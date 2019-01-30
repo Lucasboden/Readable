@@ -7,7 +7,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux'
-import { fetchCategories } from '../actions/Category';
+import { Link } from 'react-router-dom';
+import { fetchCategories,changeCategorieId } from '../actions/Category';
 import { fetchPosts } from '../actions/Posts';
 import Post from './Post'
 import Grid from '@material-ui/core/Grid'
@@ -32,7 +33,7 @@ class TabPerso extends React.Component {
   };
   componentDidMount(){
     this.props.dispatch(fetchCategories());
-    this.props.dispatch(fetchPosts('all'));
+    this.props.dispatch(fetchPosts(this.props.match?this.props.match.params.category : 'all'));
   }
   handleChange = (event, value) => {
     this.setState({ value });
@@ -43,6 +44,10 @@ class TabPerso extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
+  handleClick=(tab,index) =>()=>{
+    this.props.dispatch(fetchPosts(tab))
+    this.props.dispatch(changeCategorieId(index))
+  }
   render() {
     const { classes, theme,categories } = this.props;
     return (
@@ -51,14 +56,16 @@ class TabPerso extends React.Component {
         <Grid item lg>
         <AppBar position="static" color="default">
           <Tabs
-            value={this.state.value}
+            value={this.props.categorieId||1}
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
             fullWidth
           >
-            <Tab key='all' label='all'></Tab>
-            {tabsItens(categories)}
+          <Link to='/all'>
+            <Tab key='all' label='all' onClick={this.handleClick('all',1)}></Tab>
+          </Link>
+            {tabsItens(categories,this.handleClick)}
           </Tabs>
         </AppBar>
         </Grid>
@@ -89,16 +96,19 @@ TabPerso.propTypes = {
 function mapStateToProps (state) {
     return {  
       categories:state.categoryReducer.categories,
-      posts:state.postsReducer
+      posts:state.postsReducer,
+      categorieId:state.categoryReducer.categorieId
     }
 }
 
-function tabsItens(categories){
+function tabsItens(categories,handleClick){
   var tabsItens='<h1>processando</h1>'
   if (typeof categories !== 'undefined'){
-      tabsItens = categories.map((category) => (
-        <Tab key={category.name} label={category.name}></Tab>
-      ))
+      tabsItens = categories.map((category,i) => {
+        return( <Link key={category.id} to={`/${category.name}`}>
+            <Tab  key={category.name} label={category.name} onClick={handleClick(category.name,i)}></Tab>
+          </Link>)
+      })
     }
 return tabsItens
 }

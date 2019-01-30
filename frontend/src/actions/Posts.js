@@ -17,7 +17,11 @@ export const loadPosts = posts => ({
 export const fetchPosts = category => dispatch => (
 	ReadableAPI
 	.getPosts(category)
-	.then(posts => dispatch(loadPosts(posts)))
+	.then(posts => {
+		console.log(category)
+		return dispatch(loadPosts(posts))
+	})
+	
 );
 
 export const fetchRegisterPost = (title,body,author,category,id=uuid(),timestamp=Date.now()) => dispatch => (
