@@ -21,11 +21,11 @@ export function postsReducer(state={},action){
 				posts
 			}
 		case VOTE_ON_POST:
-			const updatedPosts = state.posts.map(post => {
+			const updatedPosts = state.posts.map((post,i) => {
 		    if (post.id === action.post.id) {
 		        return {
-		            ...post,
-		            voteScore: action.post.voteScore
+		            ...state,
+		            posts[voteScore: action.post
 		        }
 		    }
 		    return post

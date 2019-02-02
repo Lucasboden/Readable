@@ -10,7 +10,6 @@ import {connect} from 'react-redux'
 import { Link } from 'react-router-dom';
 import { fetchCategories,changeCategorieId } from '../actions/Category';
 import { bindActionCreators } from 'redux'
-import { fetchCategories } from '../actions/Category';
 import { fetchPosts } from '../actions/Posts';
 import Post from './Post'
 import Grid from '@material-ui/core/Grid'
@@ -47,8 +46,8 @@ class TabPerso extends React.Component {
     this.setState({ value: index });
   };
   handleClick=(tab,index) =>()=>{
-    this.props.dispatch(fetchPosts(tab))
-    this.props.dispatch(changeCategorieId(index))
+    this.props.fetchPosts(tab)
+    this.props.changeCategorieId(index)
   }
   render() {
     const { classes, theme,categories } = this.props;
@@ -96,6 +95,7 @@ TabPerso.propTypes = {
 };
 
 function mapStateToProps (state) {
+  console.log(state)
     return {  
       categories:state.categoryReducer.categories,
       posts:state.postsReducer,
@@ -115,4 +115,4 @@ function tabsItens(categories,handleClick){
 return tabsItens
 }
 
-export default connect(mapStateToProps,{ fetchCategories, fetchPosts })(withStyles(styles, { withTheme: true })(TabPerso));
+export default connect(mapStateToProps,{ fetchCategories, fetchPosts,changeCategorieId })(withStyles(styles, { withTheme: true })(TabPerso));

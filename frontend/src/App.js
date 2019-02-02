@@ -203,8 +203,8 @@ class App extends Component {
               <ListPost/>
             )}/>
             <Route exact path='/home' component={ListPost}/>
-            <Route exact path='/:category' component={ListPost}/>
             <Route exact path='/newPost' component={RegisterPost}/>
+            <Route exact path='/:category' component={ListPost}/>
             <Route exact path='/editPost/:postId' component={EditPost}/>
             <Route exact path='/editComment/:commentId' component={EditComment}/>
             <Route exact path='/:category/:postId' component={ModalComments}/>
