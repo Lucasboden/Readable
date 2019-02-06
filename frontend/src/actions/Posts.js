@@ -18,7 +18,6 @@ export const fetchPosts = category => dispatch => (
 	ReadableAPI
 	.getPosts(category)
 	.then(posts => {
-		console.log(category)
 		return dispatch(loadPosts(posts))
 	})
 	

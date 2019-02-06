@@ -35,8 +35,6 @@ class ImgMediaCard extends Component{
         this.setState({modalOpen: false});
     }
     handleVote(postId,type){
-        console.log(postId)
-        console.log(type)
         this.props.dispatch(vote(postId,type))
     }
     handleDeletePost(postId){
