@@ -21,20 +21,16 @@ export function postsReducer(state={},action){
 				posts
 			}
 		case VOTE_ON_POST:
-			const updatedPosts =[]
 			state.posts.map((post,i) => {
 		    if (post.id === action.post.id) {
-				updatedPosts.push(action.post)
+				post.voteScore = action.post.voteScore
+				return{
+					...state,posts
+				}
 			}
-			else{
-				updatedPosts.push(post)
-			}
-			console.log(updatedPosts)
-			return {
-				
-				posts: [...updatedPosts]
-			}
-		})
+			return{
+				...state,posts
+			}})
 		case DELETE_POST:
 		 	var currentPostDelete = [...state.posts].filter(checkId(action))
 		 	return {
