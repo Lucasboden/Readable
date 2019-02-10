@@ -1,5 +1,6 @@
 import * as ReadableAPI from '../utils/ReadableAPI'
 import uuid from "uuid/v4";
+import {getPostDetails} from '../actions/Posts'
 
 export const LOAD_COMMENTS = 'LOAD_COMMENTS'
 export const VOTE_ON_COMMENT = 'VOTE_ON_COMMENT'
@@ -21,6 +22,7 @@ export const fetchComments = postId => dispatch => (
 export const fetchRegisterComment = (body,author,postId,id=uuid(),timestamp=Date.now()) => dispatch => {
 	return ReadableAPI
 	.registerComment(body,author,postId,id,timestamp).then(comment => {
+		dispatch(getPostDetails(postId))
 		dispatch({
 			type: ADD_COMMENT,
 			comment
@@ -34,11 +36,14 @@ export const vote = (commentId,type) => dispatch => {
 		type: VOTE_ON_COMMENT,
 		comment
 		})
+		
 	})
+
 };
 
-export const deleteComment = (commentId) => dispatch => {
+export const deleteComment = (commentId,postId) => dispatch => {
 	ReadableAPI.deleteComment(commentId).then((comment) => {
+		dispatch(getPostDetails(postId))
 		dispatch({
 		type: DELETE_COMMENT,
 		comment

@@ -11,16 +11,16 @@ export function commentsReducer(state={},action){
 		case VOTE_ON_COMMENT:
 			const updatedComments = state.comments.map(comment => {
 			    if (comment.id === action.comment.id) {
-			        return {
-			            ...comment,
-			            voteScore: action.comment.voteScore
-			        }
+			        comment = action.comment
 			    }
 			    return comment
 			})
+			return{
+				comments:updatedComments
+			}
 		case DELETE_COMMENT:
 			var currentCommentDelete = [...state.comments]
-		 	const indexDelete = currentCommentDelete.findIndex(comment => comment.id === action.comment.commentId)
+		 	const indexDelete = currentCommentDelete.findIndex(comment => comment.id === action.comment.commentId)-1
 	      	currentCommentDelete.splice(indexDelete,1)
 	      	return {
 	      		comments: [...currentCommentDelete],
@@ -29,7 +29,7 @@ export function commentsReducer(state={},action){
 			var currentCommentAdd = [...state.comments]
 			currentCommentAdd.push(action.comment)
 			return{
-				comments: [...currentCommentAdd]
+				comments: [...currentCommentAdd],
 			}
 		default:
 			return state

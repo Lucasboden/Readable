@@ -8,7 +8,7 @@ class ListPost extends Component{
  
   render (){
      return(
-      <TabPerso></TabPerso>
+      <TabPerso category={this.props.match.params.category}></TabPerso>
     )
   }
 }

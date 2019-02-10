@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { vote,deletePost } from '../actions/Posts';
+import { vote,deletePost,getPostDetails } from '../actions/Posts';
 import { fetchComments } from '../actions/Comments';
 
 const styles = {
@@ -30,6 +30,7 @@ class ImgMediaCard extends Component{
     handleClick = (postId) =>{
         this.setState({modalOpen:true});
         this.props.dispatch(fetchComments(postId))
+        this.props.dispatch(getPostDetails(postId))
     }
     handleClose = () =>{
         this.setState({modalOpen: false});
@@ -42,11 +43,10 @@ class ImgMediaCard extends Component{
     }
     
     render(){
-    
   const { classes,header,body,postId,votes,comments,timestamp,author} = this.props;
   return (
             <Card className={classes.card} >
-            <Link to={'/'.concat(this.props.categorie).concat('/').concat(postId)}>
+            <Link to={'/'.concat(this.props.category).concat('/').concat(postId)}>
             <CardActionArea onClick={() => this.handleClick(postId)}>
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
@@ -100,11 +100,5 @@ ImgMediaCard.propTypes = {
   header: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
 };
-
-function mapStateToProps (state) {
-    return {  
-      categorie:state.categorieReducer.categorie
-    }
-  }
 
 export default connect()(withStyles(styles)(ImgMediaCard));

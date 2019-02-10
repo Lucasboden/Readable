@@ -181,7 +181,7 @@ class App extends Component {
           </div>
           <Divider />
           <List>
-              <Link key={"ListPosts"} to='/home'>
+              <Link key={"ListPosts"} to='/all'>
                 <ListItem button>
                   <ListItemIcon><ClearAll /></ListItemIcon>
                   <ListItemText>List Posts</ListItemText>
@@ -202,7 +202,6 @@ class App extends Component {
             <Route exact path='/' render={(history) => (
               <ListPost/>
             )}/>
-            <Route exact path='/home' component={ListPost}/>
             <Route exact path='/newPost' component={RegisterPost}/>
             <Route exact path='/:category' component={ListPost}/>
             <Route exact path='/editPost/:postId' component={EditPost}/>

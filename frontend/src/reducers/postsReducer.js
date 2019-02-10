@@ -1,5 +1,5 @@
 import { LOAD_POSTS, VOTE_ON_POST, DELETE_POST, EDIT_POST, EDIT_POST_COMMENTS_UP,
-	EDIT_POST_COMMENTS_DOWN,SORT_POST_UP,SORT_POST_DOWN } from '../actions/Posts'
+	EDIT_POST_COMMENTS_DOWN,SORT_POST_UP,SORT_POST_DOWN,POST_DETAIL,VOTE_ON_POST_SINGLE } from '../actions/Posts'
 
 function dynamicSort(property,sortOrder) {
     return function (a,b) {
@@ -21,16 +21,15 @@ export function postsReducer(state={},action){
 				posts
 			}
 		case VOTE_ON_POST:
-			state.posts.map((post,i) => {
+			const updatedPosts= state.posts.map((post,i) => {
 		    if (post.id === action.post.id) {
 				post = action.post
-				return{
-					...state,posts
-				}
 			}
-			return{
-				...state,posts
-			}})
+			return post
+			})
+			return {
+				posts:updatedPosts
+			}
 		case DELETE_POST:
 		 	var currentPostDelete = [...state.posts].filter(checkId(action))
 		 	return {
@@ -42,25 +41,27 @@ export function postsReducer(state={},action){
 				[action.post.id]: action.post
 			}
 	    case EDIT_POST_COMMENTS_DOWN:
-		    state.posts.map(post => {
+		const updatedPostsDown = state.posts.map(post => {
 		    if (post.id === action.postId) {
-		        return {
-		            ...post,
-		            commentsCount: post['commentCount'] - 1
-		        }
-		    }
-		    return post
+				post = action.post
+			}
+			return post
 		   })
+		   return {
+			posts:updatedPostsDown,
+			post:action.post
+		}
 		case EDIT_POST_COMMENTS_UP:
-		state.posts.map(post => {
+		const updatedPostsUp = state.posts.map(post => {
 		    if (post.id === action.postId) {
-		        return {
-		            ...post,
-		            commentsCount: post['commentCount'] + 1
-		        }
-		    }
-		    return post
+				post = action.post
+			}
+			return post
 		   })
+		   return {
+			posts:updatedPostsUp,
+			post:action.post
+		}
 		case SORT_POST_UP:
 			var currentPostSortUp = [...state.posts].sort(dynamicSort(action.property,1))
 			return {
@@ -71,7 +72,15 @@ export function postsReducer(state={},action){
 			currentPostSortDown.sort(dynamicSort(action.property,-1))
 		    return {
 		      posts: [...currentPostSortDown]
-		    }
+			}
+		case POST_DETAIL:
+			return{
+				post: action.post
+			}
+		case VOTE_ON_POST_SINGLE:
+			return{
+				post:action.post
+			}
 		default:
 			return state
 	}

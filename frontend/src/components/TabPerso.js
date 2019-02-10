@@ -47,7 +47,7 @@ class TabPerso extends React.Component {
   };
   handleClick=(tab,index) =>()=>{
     this.props.fetchPosts(tab)
-    this.props.changeCategorieId(index)
+    this.props.changeCategorieId(this.props.categories[index].path)
   }
   render() {
     const { classes, theme,categories } = this.props;
@@ -76,11 +76,10 @@ class TabPerso extends React.Component {
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >
-
-            <TabContainer dir={theme.direction}><Post></Post></TabContainer>
-            <TabContainer dir={theme.direction}><Post></Post></TabContainer>
-            <TabContainer dir={theme.direction}><Post ></Post></TabContainer>
-            <TabContainer dir={theme.direction}><Post ></Post></TabContainer>
+            <TabContainer dir={theme.direction}><Post category={this.props.category}></Post></TabContainer>
+            <TabContainer dir={theme.direction}><Post category={this.props.category}></Post></TabContainer>
+            <TabContainer dir={theme.direction}><Post category={this.props.category}></Post></TabContainer>
+            <TabContainer dir={theme.direction}><Post category={this.props.category}></Post></TabContainer>
         </SwipeableViews>
         </Grid>
         </Grid>
@@ -95,7 +94,6 @@ TabPerso.propTypes = {
 };
 
 function mapStateToProps (state) {
-  console.log(state)
     return {  
       categories:state.categoryReducer.categories,
       posts:state.postsReducer,

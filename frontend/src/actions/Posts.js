@@ -8,6 +8,8 @@ export const EDIT_POST_COMMENTS_UP = 'EDIT_POST_COMMENTS_UP'
 export const EDIT_POST_COMMENTS_DOWN = 'EDIT_POST_COMMENTS_DOWN'
 export const SORT_POST_UP = 'SORT_POST_UP'
 export const SORT_POST_DOWN = 'SORT_POST_DOWN'
+export const POST_DETAIL = 'POST_DETAIL'
+export const VOTE_ON_POST_SINGLE = 'VOTE_ON_POST_SINGLE'
 
 export const loadPosts = posts => ({
 	type: LOAD_POSTS,
@@ -28,12 +30,21 @@ export const fetchRegisterPost = (title,body,author,category,id=uuid(),timestamp
 	.registerPost(title,body,author,category,id,timestamp)
 );
 
-export const vote = (postId,type) => dispatch => {
+export const vote = (postId,type,single=false) => dispatch => {
 	ReadableAPI.vote(postId,type).then((post) => {
-		dispatch({
-		type: VOTE_ON_POST,
-		post
-		})
+		if(single){
+			dispatch({
+				type: VOTE_ON_POST_SINGLE,
+				post
+				})
+		}
+		else{
+			dispatch({
+				type: VOTE_ON_POST,
+				post
+				})
+		}
+		
 	})
 };
 
@@ -47,7 +58,13 @@ export const deletePost = (postId) => dispatch => {
 };
 
 export const getPostDetails = (postId) => dispatch => {
-	return ReadableAPI.getPost(postId)
+	console.log('entrou')
+	ReadableAPI.getPost(postId).then((post)=>{
+		dispatch({
+			type:POST_DETAIL,
+			post
+		})
+	})
 };
 
 export const editPost = (postTitle,postContent,postId) => dispatch => {

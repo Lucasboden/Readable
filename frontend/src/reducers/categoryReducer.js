@@ -9,10 +9,10 @@ export function categoryReducer(state={},action){
 				categories
 			}
 		case CHANGE_CATEGORIE_ID:
-		const {categorieId} = action
+		const {categorie} = action
 			return {
 				...state,
-				categorieId
+				categorie
 			}
 		default:
 			return state

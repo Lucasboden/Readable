@@ -7,9 +7,9 @@ export const loadCategories = categories => ({
 	categories
 })
 
-export const changeCategorieId = categorieId => ({
+export const changeCategorieId = categorie => ({
 	type: CHANGE_CATEGORIE_ID,
-	categorieId
+	categorie
 })
 
 export const fetchCategories = () => dispatch => (
