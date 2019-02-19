@@ -58,8 +58,7 @@ export const deletePost = (postId) => dispatch => {
 };
 
 export const getPostDetails = (postId) => dispatch => {
-	console.log('entrou')
-	ReadableAPI.getPost(postId).then((post)=>{
+	return ReadableAPI.getPost(postId).then((post)=>{
 		dispatch({
 			type:POST_DETAIL,
 			post

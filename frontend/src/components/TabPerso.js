@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux'
 import { Link } from 'react-router-dom';
 import { fetchCategories,changeCategorieId } from '../actions/Category';
-import { bindActionCreators } from 'redux'
 import { fetchPosts } from '../actions/Posts';
 import Post from './Post'
 import Grid from '@material-ui/core/Grid'

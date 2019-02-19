@@ -24,15 +24,15 @@ const styles = theme => ({
 class EditPost extends Component{
   
   componentDidMount(){
-    this.props.dispatch(getPostDetails(this.props.match.params.postId)).then(res =>{
-      this.setState({post: res, postTitle:res.title, postContent:res.body})
-    });
+    this.props.dispatch(getPostDetails(this.props.match.params.postId)).then(resp=>{
+      this.setState({postTitle:this.props.post.title,postContent:this.props.post.body,post:this.props.post})
+    })
   }
 
   state = {
     postTitle:'',
     postContent:'',
-    post: '',
+    post:'',
   }
  
   handleChangeContent = event => {
@@ -46,7 +46,7 @@ class EditPost extends Component{
   };
 
   render (){
-    var {postTitle,postContent,post} = this.state;
+    var {post,postTitle,postContent} = this.state;
      return(<div>
       <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -103,5 +103,9 @@ class EditPost extends Component{
     )
   }
 }
-
-export default connect ()(withStyles(styles)(EditPost))
+function mapStateToProps(state){
+  return{
+    post: state.postsReducer.post,
+  }
+}
+export default connect (mapStateToProps)(withStyles(styles)(EditPost))

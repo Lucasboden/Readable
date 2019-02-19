@@ -200,7 +200,7 @@ class App extends Component {
           <div className={classes.toolbar} />
           <Switch>
             <Route exact path='/' render={(history) => (
-              <ListPost/>
+              <ListPost category={'all'}/>
             )}/>
             <Route exact path='/newPost' component={RegisterPost}/>
             <Route exact path='/:category' component={ListPost}/>

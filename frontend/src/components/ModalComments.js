@@ -2,17 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
 import CardActions from '@material-ui/core/CardActions';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -22,7 +16,7 @@ import {connect} from 'react-redux'
 import { Link } from 'react-router-dom';
 
 import { deleteComment,fetchRegisterComment, vote,fetchComments } from '../actions/Comments';
-import { editPostCommentsUp,editPostCommentsDown, getPostDetails,fetchPosts,vote as votePost } from '../actions/Posts';
+import { getPostDetails,fetchPosts,vote as votePost } from '../actions/Posts';
 
 const styles = {
   appBar: {
@@ -33,9 +27,6 @@ const styles = {
   },
 };
 
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
 
 class FullScreenDialog extends React.Component {
   state = {
@@ -81,7 +72,6 @@ class FullScreenDialog extends React.Component {
     const { comments,post } = this.props;
     const { body,author } = this.state;
     var listaComentarios = null
-    console.log(post)
     if(comments !== undefined)
       listaComentarios=comments.map((comment) => (
       <div key={comment.id}>
@@ -170,7 +160,6 @@ class FullScreenDialog extends React.Component {
           />
           </Grid>
           <Grid item xs={12} sm={12}>
-          {post && post.id}
           <Button variant="contained" size="small" color="primary" fullWidth onClick={() => this.handleAdd(body,author,post.id)}>
             Add
           </Button>
@@ -186,7 +175,6 @@ FullScreenDialog.propTypes = {
 };
 
 function mapStateToProps (state) {
-  console.log(state)
   return {  
     comments: state.commentsReducer.comments,
     post: state.postsReducer.post,
