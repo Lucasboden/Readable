@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { vote,deletePost,getPostDetails } from '../actions/Posts';
+import { vote,deletePost,getPostDetails,fetchPosts } from '../actions/Posts';
 import { fetchComments } from '../actions/Comments';
 
 const styles = {
@@ -28,9 +28,11 @@ class ImgMediaCard extends Component{
         modalOpen: false
     }
     handleClick = (postId) =>{
+        this.props.dispatch(fetchPosts('all'))
         this.setState({modalOpen:true});
         this.props.dispatch(fetchComments(postId))
         this.props.dispatch(getPostDetails(postId))
+        
     }
     handleClose = () =>{
         this.setState({modalOpen: false});

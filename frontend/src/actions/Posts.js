@@ -16,14 +16,14 @@ export const loadPosts = posts => ({
 	posts
 })
 
-export const fetchPosts = category => dispatch => (
-	ReadableAPI
+export const fetchPosts = category => dispatch => {
+	return ReadableAPI
 	.getPosts(category)
 	.then(posts => {
 		return dispatch(loadPosts(posts))
 	})
 	
-);
+};
 
 export const fetchRegisterPost = (title,body,author,category,id=uuid(),timestamp=Date.now()) => dispatch => (
 	ReadableAPI
@@ -49,7 +49,7 @@ export const vote = (postId,type,single=false) => dispatch => {
 };
 
 export const deletePost = (postId) => dispatch => {
-	ReadableAPI.deletePost(postId).then((post) => {
+	return ReadableAPI.deletePost(postId).then((post) => {
 		dispatch({
 		type: DELETE_POST,
 		postId

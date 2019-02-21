@@ -28,11 +28,13 @@ export function postsReducer(state={},action){
 			return post
 			})
 			return {
+				...state,
 				posts:updatedPosts
 			}
 		case DELETE_POST:
 		 	var currentPostDelete = [...state.posts].filter(checkId(action))
 		 	return {
+				 ...state,
 		      posts: [...currentPostDelete]
 		    }
 	   	case EDIT_POST:
@@ -48,6 +50,7 @@ export function postsReducer(state={},action){
 			return post
 		   })
 		   return {
+			   ...state,
 			posts:updatedPostsDown,
 			post:action.post
 		}
@@ -59,26 +62,31 @@ export function postsReducer(state={},action){
 			return post
 		   })
 		   return {
+			...state,
 			posts:updatedPostsUp,
 			post:action.post
 		}
 		case SORT_POST_UP:
 			var currentPostSortUp = [...state.posts].sort(dynamicSort(action.property,1))
 			return {
+			...state,
 		      posts: [...currentPostSortUp]
 		    }
 	    case SORT_POST_DOWN:
 			var currentPostSortDown = [...state.posts]
 			currentPostSortDown.sort(dynamicSort(action.property,-1))
 		    return {
+				...state,
 		      posts: [...currentPostSortDown]
 			}
 		case POST_DETAIL:
 			return{
+				...state,
 				post: action.post
 			}
 		case VOTE_ON_POST_SINGLE:
 			return{
+				...state,
 				post:action.post
 			}
 		default:

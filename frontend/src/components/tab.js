@@ -27,7 +27,6 @@ class TabPerso extends React.Component {
         <Tabs
           value={this.state.value}
           indicatorColor="primary"
-          textColor="primary"
           onChange={this.handleChange}
         >
           <div>

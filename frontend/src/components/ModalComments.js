@@ -16,7 +16,7 @@ import {connect} from 'react-redux'
 import { Link } from 'react-router-dom';
 
 import { deleteComment,fetchRegisterComment, vote,fetchComments } from '../actions/Comments';
-import { getPostDetails,fetchPosts,vote as votePost } from '../actions/Posts';
+import { getPostDetails,fetchPosts, deletePost,vote as votePost } from '../actions/Posts';
 
 const styles = {
   appBar: {
@@ -60,11 +60,20 @@ class FullScreenDialog extends React.Component {
     this.setState({ author: event.target.value });
   };
 
+  handleDeletePost(postId){
+    this.props.dispatch(deletePost(postId)).then(()=>{
+      this.props.history.push('/all')
+  })
+  }
+
+  handleEditPost(postId){
+    this.props.history.push('/editPost/'.concat(postId))
+  }
+
   componentDidMount(){
     this.props.dispatch(getPostDetails(this.props.match.params.postId))
     this.props.dispatch(fetchComments(this.props.match.params.postId))
-    if(this.props.posts === undefined)
-      this.props.dispatch(fetchPosts(this.props.match.params.category))
+    this.props.dispatch(fetchPosts('all'))
   }
   
   render() {
@@ -72,6 +81,11 @@ class FullScreenDialog extends React.Component {
     const { comments,post } = this.props;
     const { body,author } = this.state;
     var listaComentarios = null
+    console.log(post==={})
+    if(post !== undefined)
+    if(post === undefined || Object.keys(post).length===0){
+      return(<h1>Post Not Found</h1>)
+    }
     if(comments !== undefined)
       listaComentarios=comments.map((comment) => (
       <div key={comment.id}>
@@ -133,7 +147,7 @@ class FullScreenDialog extends React.Component {
           
           <List>
           <Divider style={{marginTop:'-10px'}}/>
-    {listaComentarios}
+            {listaComentarios}
           </List>
           <Typography variant="h6" gutterBottom>
             New Comment
@@ -162,6 +176,16 @@ class FullScreenDialog extends React.Component {
           <Grid item xs={12} sm={12}>
           <Button variant="contained" size="small" color="primary" fullWidth onClick={() => this.handleAdd(body,author,post.id)}>
             Add
+          </Button>
+          </Grid>
+          <Grid item xs={12} sm={12}>
+          <Button variant="contained" size="small" color="primary" fullWidth onClick={() => this.handleEditPost(post.id)}>
+            Edit Post
+          </Button>
+          </Grid>
+          <Grid item xs={12} sm={12}>
+          <Button variant="contained" size="small" color="primary" fullWidth onClick={() => this.handleDeletePost(post.id)}>
+            Delete Post            
           </Button>
           </Grid>
           </Grid>

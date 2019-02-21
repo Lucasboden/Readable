@@ -59,8 +59,6 @@ class TabPerso extends React.Component {
             value={this.props.categorieId||1}
             onChange={this.handleChange}
             indicatorColor="primary"
-            textColor="primary"
-            fullWidth
           >
           <Link to='/all'>
             <Tab key='all' label='all' onClick={this.handleClick('all',1)}></Tab>
